@@ -9,14 +9,17 @@ const symbol = makeArray(33, 47).concat(makeArray(58, 64)).concat(makeArray(91, 
 function writePassword() {
   var password = generatePassword();
   var passwordText = document.querySelector("#password");
-
   passwordText.value = password;
-
 }
 
+// Generate password based on selected criteria
 function generatePassword() {
   var passLength = selectLength();
   var passType = selectType();
+  if (passType.every(validType) == true) {
+    alert("You must include at least one character type!")
+    passType = selectType();
+  }
   var chars = [];
   var passCode = [];
   if (passType[0]) {chars = chars.concat(lowercase);}
@@ -30,6 +33,7 @@ function generatePassword() {
   return passCode.join("");
 }
 
+// Create an array of all integers between two numbers
 function makeArray(low, high) {
   const array = []
   for (i=low; i<=high; i++) {
@@ -38,6 +42,7 @@ function makeArray(low, high) {
   return array;
 }
 
+// Prompt for password length
 function selectLength() {
   var length = prompt("Set password length? (8-128 characters)", "8");
   if (length != null) {
@@ -53,20 +58,17 @@ function selectLength() {
   return length;
 }
 
+// Prompt for character types to include in the password
 function selectType() {
   var lower = confirm("Include lowercase?");
   var upper = confirm("Include uppercase?");
   var num = confirm("Include numbers?");
   var special = confirm("Include special characters?");
   var types = [lower, upper, num, special];
-  if (types.every(validType) == true) {
-    alert("You must include at least one character type!")
-    selectType();
-    return types;
-  }
   return types;
 }
 
+// Validate input to make sure at least one character type is selected
 function validType(type) {
   return type == false;
 }
